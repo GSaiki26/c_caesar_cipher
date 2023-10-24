@@ -1,38 +1,52 @@
-//Libs
+// Libs
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-//Data
-int GetIndexOf(char alphabet[27], char x);
-//Functions
+
+// Functions
+/**
+ * A function to return the index from some char in the provided string.
+ * @param string The string that'll be used.
+ * @param character The character that'll be seached in the string.
+ * @return The char is not found, it should return -1;
+*/
+int strFindIndexOf(const char *str, const char character) {
+  for (int i = 0; i < strlen(str); i++) {
+    // printf("%c - %c\n", str[i], character);
+    if (str[i] == character) return i;
+  }
+
+  return -1;
+}
+
+// Main
 int main() {
-    char phrase[51], alphabet[26] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-    printf("Type the phrase: ");
-    scanf("%[^\n]",phrase); fflush(stdin);
-    for (int i =0; i < 27; i++) {
-        printf("Skipped letters [%d] = ", i);
-        for (int ii = 0; ii < strlen(phrase); ii++) {
-            char x = phrase[ii]; x = tolower(x);
-            int index = GetIndexOf(alphabet, x);
-            if (index == NULL) {
-                printf("%c", x);
-            } else {
-                index = index + i;
-                if (index >= 26) {
-                    index = index - 26;
-                }
-                printf("%c", alphabet[index]);
-            }
-        }
-        printf("\n");
+  const int INPUT_LENGTH = 20;
+  const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
+
+  // Get user's input.
+  char input[INPUT_LENGTH];
+  fgets(input, INPUT_LENGTH, stdin);
+
+  // Loop through into all the length of alphabet.
+  for (int alphIndex = 0; alphIndex < strlen(ALPHABET); alphIndex++) {
+
+    // Loop through all the characters from the input.
+    for (int inputIndex = 0; inputIndex < strlen(input); inputIndex++) {
+      // Lower the current character and search in the alphabet.
+      input[inputIndex] = tolower(input[inputIndex]);
+      int charIndex = strFindIndexOf(ALPHABET, input[inputIndex]);
+
+      // Check if the char was found and add +1 to it index.
+      if (charIndex == -1) continue;
+      charIndex++;
+
+      // Check if the index is outbound.
+      if (charIndex == strlen(ALPHABET)) charIndex = 0;
+      input[inputIndex] = ALPHABET[charIndex];
     }
+
+    printf("Result of [%i]: %s\n", alphIndex, input);
+  }
 }
-int GetIndexOf(char alphabet[27], char x) {
-    for (int i = 0; i<strlen(alphabet); i++) {
-        if (alphabet[i] == x) {
-            return i;
-        }
-    }
-    return NULL;
-}
-//Procedures
